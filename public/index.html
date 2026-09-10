@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Millwright</title>
+<meta name="description" content="Millwright surveys the manual work inside your business, builds the automation that does it, and stays on to keep it running.">
+<meta property="og:title" content="Millwright">
+<meta property="og:description" content="We install the machines that run your busywork.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* ==========================================================================
+   MILLWRIGHT — landing page
+   Design language: a machine-shop drawing set. Concrete ground, graphite ink,
+   machinery green (the color machine tools are actually painted), safety
+   yellow reserved for status only. Sheet numbers and dimension rules are
+   structural, not decorative: they encode the drawing order and the timeline.
+   ========================================================================== */
+
+:root {
+  /* light — cool concrete + graphite */
+  --ground:      #E3E5E0;
+  --surface:     #F6F7F4;
+  --surface-2:   #ECEEE9;
+  --ink:         #141A18;
+  --ink-2:       #58615C;
+  --ink-3:       #838C87;
+  --rule:        #C3C7C0;
+  --rule-strong: #A2A89F;
+  --accent:      #2F5D4F;
+  --accent-ink:  #F6F7F4;
+  --accent-soft: #DCE6E1;
+  --hot:         #A87C00;
+  --hot-bg:      #F3E4A8;
+  --focus:       #2F5D4F;
+
+  --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-body:    "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --f-mono:    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --gutter: clamp(1.125rem, 4vw, 3rem);
+  --measure: 62ch;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:      #141715;
+    --surface:     #1B1F1D;
+    --surface-2:   #232825;
+    --ink:         #E9EBE6;
+    --ink-2:       #9AA39C;
+    --ink-3:       #737C76;
+    --rule:        #333A36;
+    --rule-strong: #4B534E;
+    --accent:      #79BFA5;
+    --accent-ink:  #10201A;
+    --accent-soft: #22322C;
+    --hot:         #F2C438;
+    --hot-bg:      #3A3110;
+    --focus:       #79BFA5;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ground:      #141715;
+  --surface:     #1B1F1D;
+  --surface-2:   #232825;
+  --ink:         #E9EBE6;
+  --ink-2:       #9AA39C;
+  --ink-3:       #737C76;
+  --rule:        #333A36;
+  --rule-strong: #4B534E;
+  --accent:      #79BFA5;
+  --accent-ink:  #10201A;
+  --accent-soft: #22322C;
+  --hot:         #F2C438;
+  --hot-bg:      #3A3110;
+  --focus:       #79BFA5;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 1.0625rem;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sheet {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+/* --- primitives ---------------------------------------------------------- */
+
+.mono {
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+h1, h2, h3 {
+  font-family: var(--f-display);
+  font-variation-settings: "wdth" 112;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  margin: 0;
+}
+
+p { margin: 0; }
+a { color: inherit; }
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+/* dimension rule — a drafting dimension line carrying a real measurement */
+.dim {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--ink-3);
+}
+.dim::before, .dim::after {
+  content: "";
+  align-self: stretch;
+  border-left: 1px solid var(--rule-strong);
+  min-height: 0.7rem;
+}
+.dim .dim-line {
+  flex: 1 1 0;
+  height: 1px;
+  background: var(--rule-strong);
+  min-width: 0.75rem;
+}
+.dim .dim-label { flex: 0 0 auto; }
+
+/* --- masthead ------------------------------------------------------------ */
+
+.masthead {
+  border-bottom: 1px solid var(--rule);
+  background: var(--ground);
+}
+.masthead .sheet {
+  display: flex;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  flex-wrap: wrap;
+  padding-block: 1rem;
+}
+
+.wordmark {
+  font-family: var(--f-display);
+  font-variation-settings: "wdth" 118;
+  font-weight: 900;
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.wordmark svg { display: block; }
+
+.masthead nav {
+  margin-left: auto;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.masthead nav a {
+  color: var(--ink-2);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+}
+.masthead nav a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+
+.stamp {
+  color: var(--ink-3);
+  border: 1px solid var(--rule);
+  padding: 0.3rem 0.5rem;
+}
+
+/* --- hero ---------------------------------------------------------------- */
+
+.hero { padding-block: clamp(2.75rem, 8vw, 5.5rem) clamp(2rem, 5vw, 3rem); }
+
+.eyebrow {
+  color: var(--accent);
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.35rem, 6.2vw, 4.35rem);
+  max-width: 17ch;
+  margin-bottom: 1.5rem;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.hero-lede {
+  max-width: var(--measure);
+  font-size: 1.1875rem;
+  color: var(--ink-2);
+  margin-bottom: 2rem;
+}
+.hero-lede strong { color: var(--ink); font-weight: 600; }
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem 1.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.btn {
+  font-family: var(--f-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: 1px solid var(--accent);
+  padding: 0.85rem 1.5rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+.btn:hover { opacity: 0.88; }
+.btn:active { transform: translateY(1px); }
+
+.btn-quiet {
+  background: transparent;
+  color: var(--ink-2);
+  border-color: var(--rule-strong);
+}
+.btn-quiet:hover { color: var(--ink); border-color: var(--ink-2); opacity: 1; }
+
+.hero-dim { max-width: 46rem; }
+
+/* --- section scaffolding ------------------------------------------------- */
+
+section { padding-block: clamp(2.25rem, 5vw, 3.75rem); }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 2.25rem;
+  border-top: 1px solid var(--rule-strong);
+  padding-top: 0.75rem;
+}
+.section-head .sheet-no { color: var(--accent); flex: 0 0 auto; }
+.section-head h2 {
+  font-size: clamp(1.45rem, 3vw, 2.05rem);
+  flex: 1 1 auto;
+}
+.section-head .note {
+  flex: 0 0 auto;
+  color: var(--ink-3);
+  display: none;
+}
+@media (min-width: 800px) { .section-head .note { display: block; } }
+
+/* --- scope table --------------------------------------------------------- */
+
+.scope { border-top: 1px solid var(--rule); }
+
+.scope-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.4rem 1.5rem;
+  padding-block: 1.35rem;
+  border-bottom: 1px solid var(--rule);
+}
+@media (min-width: 760px) {
+  .scope-row {
+    grid-template-columns: minmax(11rem, 15rem) minmax(0, 1fr) minmax(8rem, 11rem);
+    align-items: baseline;
+  }
+}
+
+.scope-row h3 {
+  font-size: 1.0625rem;
+  font-variation-settings: "wdth" 100;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.scope-row p { color: var(--ink-2); font-size: 0.9688rem; }
+
+.target {
+  font-family: var(--f-mono);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.target .arrow { color: var(--accent); }
+.target .was { color: var(--ink-3); text-decoration: line-through; text-decoration-thickness: 1px; }
+
+.footnote {
+  margin-top: 1.25rem;
+  color: var(--ink-2);
+  font-size: 0.875rem;
+  max-width: var(--measure);
+}
+
+/* --- install sequence ---------------------------------------------------- */
+
+.stages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+@media (min-width: 900px) { .stages { grid-template-columns: repeat(4, 1fr); } }
+
+.stage {
+  background: var(--surface);
+  padding: 1.5rem 1.35rem 1.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.stage-no {
+  font-family: var(--f-display);
+  font-variation-settings: "wdth" 118;
+  font-weight: 900;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--rule-strong);
+  font-variant-numeric: tabular-nums;
+}
+.stage h3 {
+  font-size: 1.0625rem;
+  font-variation-settings: "wdth" 100;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.stage .dur { color: var(--accent); }
+.stage p { color: var(--ink-2); font-size: 0.9375rem; }
+.stage:last-child .stage-no { color: var(--accent); }
+
+/* --- spec sheet ---------------------------------------------------------- */
+
+.spec { border-top: 1px solid var(--rule); }
+.spec-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.3rem 1.5rem;
+  padding-block: 1.1rem;
+  border-bottom: 1px solid var(--rule);
+}
+@media (min-width: 700px) {
+  .spec-row { grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr); align-items: baseline; }
+}
+.spec-row dt { color: var(--ink-3); }
+.spec-row dd { margin: 0; color: var(--ink); }
+.spec-row.is-flagged dd { color: var(--ink); }
+.spec-row.is-flagged dt { color: var(--hot); }
+.flag {
+  display: inline-block;
+  background: var(--hot-bg);
+  color: var(--hot);
+  padding: 0.1rem 0.4rem;
+  margin-right: 0.5rem;
+}
+
+/* --- waitlist ------------------------------------------------------------ */
+
+.intake {
+  background: var(--surface);
+  border: 1px solid var(--rule-strong);
+  padding: clamp(1.35rem, 4vw, 2.5rem);
+}
+
+.intake-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1rem;
+  margin-bottom: 1.75rem;
+}
+.intake-head h2 { font-size: clamp(1.35rem, 2.6vw, 1.75rem); }
+.intake-head .count { color: var(--accent); }
+
+form { display: grid; gap: 1.25rem; }
+@media (min-width: 720px) {
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+}
+
+.field { display: grid; gap: 0.45rem; }
+.field label { color: var(--ink-2); }
+.field label .req { color: var(--accent); }
+
+input, select, textarea {
+  font-family: var(--f-body);
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--ground);
+  border: 1px solid var(--rule-strong);
+  padding: 0.7rem 0.75rem;
+  width: 100%;
+  border-radius: 0;
+}
+textarea { resize: vertical; min-height: 5.5rem; line-height: 1.5; }
+select { appearance: none; background-image: none; }
+input::placeholder, textarea::placeholder { color: var(--ink-3); }
+
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.submit-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--rule);
+  padding-top: 1.35rem;
+}
+.fine { color: var(--ink-2); font-size: 0.875rem; max-width: 34ch; }
+
+.msg {
+  border-left: 3px solid var(--hot);
+  background: var(--hot-bg);
+  color: var(--hot);
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9375rem;
+}
+
+/* work order receipt */
+.receipt { display: grid; gap: 1.35rem; }
+.receipt h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+.receipt .wo {
+  font-family: var(--f-mono);
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.receipt dl { margin: 0; display: grid; gap: 0.75rem; }
+.receipt p { color: var(--ink-2); max-width: var(--measure); }
+
+/* --- footer -------------------------------------------------------------- */
+
+footer {
+  border-top: 1px solid var(--rule-strong);
+  margin-top: clamp(2rem, 6vw, 4rem);
+}
+footer .sheet {
+  padding-block: 2rem 3rem;
+  display: flex;
+  gap: 1rem 2rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  color: var(--ink-3);
+}
+footer .wordmark { color: var(--ink-2); font-size: 0.95rem; }
+footer .colophon { margin-left: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="sheet">
+    <a class="wordmark" href="#top">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+        <circle cx="10" cy="10" r="3.1" fill="none"></circle>
+        <path d="M10 1.4v3.2M10 15.4v3.2M1.4 10h3.2M15.4 10h3.2M3.9 3.9l2.3 2.3M13.8 13.8l2.3 2.3M16.1 3.9l-2.3 2.3M6.2 13.8l-2.3 2.3"></path>
+      </svg>
+      Millwright
+    </a>
+    <nav aria-label="Sections">
+      <a class="mono" href="#scope">Scope</a>
+      <a class="mono" href="#sequence">Sequence</a>
+      <a class="mono" href="#spec">Spec</a>
+      <a class="mono" href="#waitlist">Waitlist</a>
+    </nav>
+    <span class="mono stamp">Rev 01 &middot; Sheet A</span>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="sheet hero">
+    <span class="mono eyebrow">AI automation, installed &mdash; not sold</span>
+    <h1>The hard part of AI isn't the model. It's the <em>install</em>.</h1>
+    <p class="hero-lede">Millwright surveys the manual work inside your business, builds the machinery that does it, and stays on to keep it running in tolerance. You get <strong>working equipment and a runbook</strong> &mdash; not a pilot, not a prompt library, not another seat to fill.</p>
+    <div class="hero-actions">
+      <a class="btn" href="#waitlist">Join the waitlist</a>
+      <a class="btn btn-quiet" href="#sequence">See the install sequence</a>
+    </div>
+    <div class="dim mono hero-dim">
+      <span class="dim-label">Survey</span>
+      <span class="dim-line"></span>
+      <span class="dim-label">6 weeks to first install</span>
+      <span class="dim-line"></span>
+      <span class="dim-label">Running</span>
+    </div>
+  </div>
+
+  <section id="scope" class="sheet">
+    <div class="section-head">
+      <span class="mono sheet-no">A-1</span>
+      <h2>What we install</h2>
+      <span class="mono note">Cycle time, per unit of work</span>
+    </div>
+
+    <div class="scope">
+      <div class="scope-row">
+        <h3>Invoice intake &amp; coding</h3>
+        <p>Three-way match, GL coding, and the exception pile that eats your AP clerk's week. The machine codes what it's sure about and routes what it isn't, with the reason attached.</p>
+        <p class="target"><span class="was">14 min</span> <span class="arrow">&rarr;</span> 40 sec</p>
+      </div>
+      <div class="scope-row">
+        <h3>Support triage</h3>
+        <p>Read the ticket, pull the account, classify it, draft the reply, and escalate the ones a human should actually own. Your team stops sorting and starts answering.</p>
+        <p class="target"><span class="was">2 h</span> <span class="arrow">&rarr;</span> 4 min</p>
+      </div>
+      <div class="scope-row">
+        <h3>Vendor onboarding</h3>
+        <p>Chasing W-9s, certificates of insurance, and bank details across email threads. Documents parsed and checked against your policy, expiries tracked before they lapse.</p>
+        <p class="target"><span class="was">9 days</span> <span class="arrow">&rarr;</span> 2 days</p>
+      </div>
+      <div class="scope-row">
+        <h3>The Monday reporting pack</h3>
+        <p>The spreadsheet somebody rebuilds by hand every week from four systems that don't talk. Assembled overnight, with the variances already called out.</p>
+        <p class="target"><span class="was">6 h/wk</span> <span class="arrow">&rarr;</span> 0 h/wk</p>
+      </div>
+      <div class="scope-row">
+        <h3>Whatever yours is</h3>
+        <p>Every business has a workflow that exists only in one person's head and one shared drive. Those are the good ones. We start by timing it.</p>
+        <p class="target"><span class="arrow">&rarr;</span> Scoped in week 1</p>
+      </div>
+    </div>
+
+    <p class="footnote">Figures are the targets we scope toward, drawn from the kind of work we take on &mdash; not measured results from your business. Your actual baseline gets timed during the survey, and the number we commit to is written into the work order before anyone builds anything.</p>
+  </section>
+
+  <section id="sequence" class="sheet">
+    <div class="section-head">
+      <span class="mono sheet-no">A-2</span>
+      <h2>The install sequence</h2>
+      <span class="mono note">Four stages &middot; fixed scope</span>
+    </div>
+
+    <ol class="stages">
+      <li class="stage">
+        <span class="stage-no">01</span>
+        <h3>Survey</h3>
+        <span class="mono dur">1 week</span>
+        <p>We sit with the people doing the work and time it &mdash; the real process, including the parts nobody documented. You get a work order naming the workflows, their current cycle times, and a target.</p>
+      </li>
+      <li class="stage">
+        <span class="stage-no">02</span>
+        <h3>Fabricate</h3>
+        <span class="mono dur">2&ndash;4 weeks</span>
+        <p>We build in your stack, against your real data, with your edge cases. No sandbox demo that quietly assumes clean inputs.</p>
+      </li>
+      <li class="stage">
+        <span class="stage-no">03</span>
+        <h3>Commission</h3>
+        <span class="mono dur">1 week</span>
+        <p>It runs in parallel with the humans until the error rate holds inside the tolerance we agreed. Signed off against the work order &mdash; not just shipped.</p>
+      </li>
+      <li class="stage">
+        <span class="stage-no">04</span>
+        <h3>Maintain</h3>
+        <span class="mono dur">Ongoing</span>
+        <p>Models drift, vendors change their APIs, and your process changes in March. We keep it in tolerance, and you can see every run it made.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="spec" class="sheet">
+    <div class="section-head">
+      <span class="mono sheet-no">A-3</span>
+      <h2>Spec sheet</h2>
+      <span class="mono note">Terms, plainly</span>
+    </div>
+
+    <dl class="spec">
+      <div class="spec-row"><dt class="mono">Engagement</dt><dd>Fixed-scope work order, priced per install. You approve the scope and the target before we build.</dd></div>
+      <div class="spec-row"><dt class="mono">First install</dt><dd>Six weeks from the day the survey starts.</dd></div>
+      <div class="spec-row"><dt class="mono">Runs in</dt><dd>Your cloud or ours. Your data stays where your policy says it stays.</dd></div>
+      <div class="spec-row"><dt class="mono">Integrates with</dt><dd>Anything with an API &mdash; and the things without one: email, shared drives, supplier portals, the spreadsheet.</dd></div>
+      <div class="spec-row"><dt class="mono">Handover</dt><dd>Source code, the runbook, and the standing ability to fire us without losing the machinery.</dd></div>
+      <div class="spec-row"><dt class="mono">Maintenance</dt><dd>Monthly retainer covering drift, breakage, and process changes. Cancel with 30 days' notice.</dd></div>
+      <div class="spec-row is-flagged"><dt class="mono">Out of scope</dt><dd><span class="mono flag">Won't</span>Replacing your team wholesale, selling you a chatbot, or automating a process that's broken to begin with. We'll tell you when the answer is to fix the process first.</dd></div>
+    </dl>
+  </section>
+
+  <section id="waitlist" class="sheet">
+    <div class="section-head">
+      <span class="mono sheet-no">A-4</span>
+      <h2>Work order intake</h2>
+      <span class="mono note">Install slots &middot; Q1 2027</span>
+    </div>
+
+    <div class="intake">
+      <div class="intake-head">
+        <h2>Get on the waitlist</h2>
+        <span class="mono count" id="count" hidden></span>
+      </div>
+
+      <div id="form-wrap">
+        <form id="waitlist-form" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label class="mono" for="email">Work email <span class="req">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@company.com">
+            </div>
+            <div class="field">
+              <label class="mono" for="company">Company</label>
+              <input id="company" name="company" type="text" autocomplete="organization" placeholder="Acme Fabrication">
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="mono" for="size">Team size</label>
+              <select id="size" name="size">
+                <option value="">Select&hellip;</option>
+                <option>1&ndash;20</option>
+                <option>21&ndash;100</option>
+                <option>101&ndash;500</option>
+                <option>500+</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="mono" for="role">Your role</label>
+              <input id="role" name="role" type="text" placeholder="Head of Operations">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="mono" for="workflow">The one workflow you'd install first</label>
+            <textarea id="workflow" name="workflow" placeholder="Two people spend most of Thursday reconciling shipping invoices against purchase orders in a spreadsheet."></textarea>
+          </div>
+
+          <div class="hp" aria-hidden="true">
+            <label for="company_url">Leave this blank</label>
+            <input id="company_url" name="company_url" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div id="error" class="msg" hidden></div>
+
+          <div class="submit-row">
+            <button class="btn" type="submit" id="submit">Get on the list</button>
+            <p class="fine">One email when install slots open, and one when we publish the survey checklist. Nothing else.</p>
+          </div>
+        </form>
+        <noscript><p class="msg" style="margin-top:1.25rem">The intake form needs JavaScript. Email <strong>hello@millwright.example</strong> and we'll add you by hand.</p></noscript>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="sheet">
+    <span class="wordmark">Millwright</span>
+    <span class="mono">We install the machines that run your busywork.</span>
+    <span class="mono colophon">Drawing set A &middot; Rev 01</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* The page ships with two storage adapters and picks one at runtime:
+     - published as an Artifact, it writes to the artifact's own database
+     - self-hosted, it posts to the Node service in /server
+     Neither is assumed to exist; if both are absent the form says so plainly. */
+
+  var dbReady = (function () {
+    try {
+      if (window.claude && typeof window.claude.use === "function") {
+        return window.claude.use("db").catch(function () { return null; });
+      }
+    } catch (e) { /* not in a viewer */ }
+    return Promise.resolve(null);
+  })();
+
+  /* FNV-1a — a stable id per email so a second signup updates rather than
+     duplicates, and the address never appears in the document path. */
+  function emailKey(email) {
+    var h = 0x811c9dc5;
+    var s = String(email).trim().toLowerCase();
+    for (var i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = (h + ((h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24))) >>> 0;
+    }
+    return "e" + ("00000000" + h.toString(16)).slice(-8);
+  }
+
+  function workOrderRef(date) {
+    var yy = String(date.getFullYear()).slice(-2);
+    var mm = ("0" + (date.getMonth() + 1)).slice(-2);
+    var tail = "";
+    var alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    var bytes = new Uint8Array(4);
+    (window.crypto || window.msCrypto).getRandomValues(bytes);
+    for (var i = 0; i < 4; i++) { tail += alphabet[bytes[i] % alphabet.length]; }
+    return "WO-" + yy + mm + "-" + tail;
+  }
+
+  function validEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+  }
+
+  var form = document.getElementById("waitlist-form");
+  var formWrap = document.getElementById("form-wrap");
+  var errorBox = document.getElementById("error");
+  var submitBtn = document.getElementById("submit");
+  var countEl = document.getElementById("count");
+
+  function showError(message) {
+    errorBox.textContent = message;
+    errorBox.hidden = false;
+  }
+
+  /* --- live count ------------------------------------------------------- */
+
+  function renderCount(n) {
+    if (typeof n !== "number" || n < 1) { return; }
+    countEl.textContent = n === 1 ? "1 on the list" : n + " on the list";
+    countEl.hidden = false;
+  }
+
+  function loadCount() {
+    dbReady.then(function (db) {
+      if (db) {
+        db.collection("waitlist").limit(1000).get()
+          .then(function (snap) { renderCount(snap.size); })
+          .catch(function () { /* leave the count hidden */ });
+        return;
+      }
+      fetch("/api/waitlist/count")
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) { if (j) { renderCount(j.count); } })
+        .catch(function () { /* static hosting, no service — stay quiet */ });
+    });
+  }
+
+  /* --- submit ----------------------------------------------------------- */
+
+  function persist(payload) {
+    return dbReady.then(function (db) {
+      if (db) {
+        return db.doc("waitlist/" + emailKey(payload.email)).set(payload)
+          .then(function () { return { ref: payload.ref }; })
+          .catch(function (err) {
+            var code = err && err.code;
+            if (code === "not_granted" || code === "capability_disabled") {
+              throw new Error("This page can't reach its waitlist right now. Email hello@millwright.example and we'll add you by hand.");
+            }
+            if (code === "quota_exceeded" || code === "resource_exhausted") {
+              throw new Error("The waitlist is taking more signups than it can hold this minute. Try again shortly.");
+            }
+            throw new Error("We couldn't save that. Try again in a moment.");
+          });
+      }
+      return fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (body) {
+          if (!res.ok) {
+            throw new Error(body.error || "We couldn't save that. Try again in a moment.");
+          }
+          return { ref: body.ref || payload.ref };
+        });
+      }, function () {
+        throw new Error("We couldn't reach the waitlist service. Check your connection and try again.");
+      });
+    });
+  }
+
+  function showReceipt(ref, email) {
+    var stages = [
+      ["Survey call", "We email you to book it when a slot opens"],
+      ["Work order", "Scope, cycle times and target, in writing"],
+      ["Install", "Six weeks from the day the survey starts"]
+    ];
+    var rows = stages.map(function (s) {
+      return '<div class="spec-row"><dt class="mono">' + s[0] + '</dt><dd>' + s[1] + "</dd></div>";
+    }).join("");
+
+    formWrap.innerHTML =
+      '<div class="receipt">' +
+        '<span class="mono" style="color:var(--ink-3)">Work order opened</span>' +
+        '<p class="wo">' + ref + "</p>" +
+        "<h2>You're on the list.</h2>" +
+        "<p>We've got <strong>" + email.replace(/[<>&]/g, "") + "</strong>. Nothing else is required from you now &mdash; " +
+        "we work the list in order as install slots open, and the next thing you hear from us is a survey booking.</p>" +
+        '<dl class="spec" style="border-top:1px solid var(--rule)">' + rows + "</dl>" +
+      "</div>";
+    formWrap.setAttribute("tabindex", "-1");
+    formWrap.focus();
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    errorBox.hidden = true;
+
+    if (form.company_url.value) { return; } /* bot */
+
+    var email = form.email.value.trim();
+    if (!validEmail(email)) {
+      showError("That email address doesn't look complete. Check it and try again.");
+      form.email.focus();
+      return;
+    }
+
+    var payload = {
+      email: email,
+      company: form.company.value.trim(),
+      size: form.size.value,
+      role: form.role.value.trim(),
+      workflow: form.workflow.value.trim(),
+      ref: workOrderRef(new Date()),
+      created_at: new Date().toISOString(),
+      source: window.location.hostname || "artifact"
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Filing…";
+
+    persist(payload).then(function (result) {
+      showReceipt(result.ref, payload.email);
+    }, function (err) {
+      showError(err.message);
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Get on the list";
+    });
+  });
+
+  loadCount();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "millwright",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Millwright — landing page and waitlist service.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js",
+    "build:artifact": "node scripts/build-artifact.mjs",
+    "export": "node scripts/export-waitlist.mjs"
+  }
+}
